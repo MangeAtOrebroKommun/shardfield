@@ -1,0 +1,35 @@
+# Copy to kustomization.yaml (git-ignored), fill in your values, then:
+#   kubectl --context <your-context> apply -k .
+# The game code ships in a ConfigMap on a stock node image, so no image build or registry is needed.
+# The ConfigMap name gets a content hash, so every code change rolls the pod automatically.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: my-namespace
+labels:
+  - pairs:
+      app.kubernetes.io/name: shardfield
+      app.kubernetes.io/part-of: shardfield
+    includeSelectors: true
+resources:
+  - k8s/pvc.yaml
+  - k8s/deployment.yaml
+  - k8s/service.yaml
+  - k8s/ingressroute.yaml
+configMapGenerator:
+  - name: shardfield-code
+    files:
+      - server.js
+      - public/sim.js
+      - public/index.html
+patches:
+  - target: { kind: IngressRoute, name: shardfield }
+    patch: |-
+      - op: replace
+        path: /spec/routes/0/match
+        value: Host(`shardfield.example.com`) && PathPrefix(`/`)
+  # Optional: storage class for the leaderboard volume (omit to use the cluster default)
+  # - target: { kind: PersistentVolumeClaim, name: shardfield-data }
+  #   patch: |-
+  #     - op: add
+  #       path: /spec/storageClassName
+  #       value: my-storage-class

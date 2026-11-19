@@ -1,0 +1,10 @@
+# Holds leaderboard.json so the high scores survive pod restarts and redeploys.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shardfield-data
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 256Mi

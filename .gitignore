@@ -1,0 +1,5 @@
+data/
+node_modules/
+.DS_Store
+# local deploy config with internal hostnames; see kustomization.example.yaml
+kustomization.yaml

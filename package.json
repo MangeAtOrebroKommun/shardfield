@@ -1,0 +1,9 @@
+{
+  "name": "shardfield",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Multiplayer vector space shooter (2-6 players), Node core only",
+  "main": "server.js",
+  "scripts": { "start": "node server.js", "test": "node test/smoke.js && node test/leaderboard.js" },
+  "engines": { "node": ">=22" }
+}

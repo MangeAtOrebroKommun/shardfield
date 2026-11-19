@@ -1,0 +1,17 @@
+# Traefik IngressRoute. The hostname is a placeholder: set it in your overlay.
+# `tls: {}` serves Traefik's default certificate (e.g. a wildcard cert for your domain).
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: shardfield
+spec:
+  entryPoints:
+    - web
+    - websecure
+  tls: {}
+  routes:
+    - match: Host(`shardfield.example.com`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: shardfield
+          port: 80
